@@ -6,13 +6,10 @@
  */
 
 
-#ifndef INC_BH1750_CONFIG_H_
-#define INC_BH1750_CONFIG_H_
-
-/* Config --------------------------------------------------------------------*/
-
-/* Includes ------------------------------------------------------------------*/
 #include "bh1750.h"
+#include "bh1750_config.h"
+#include "main.h"
+#include "i2c.h"
 
 /* Typedef -------------------------------------------------------------------*/
 
@@ -20,11 +17,19 @@
 
 /* Macro ---------------------------------------------------------------------*/
 
+/* Private variables ---------------------------------------------------------*/
+
 /* Public variables ----------------------------------------------------------*/
-extern BH1750_HandleTypeDef hbh1750_1;
-extern BH1750_HandleTypeDef hbh1750_2;
+BH1750_HandleTypeDef hbh1750_1 = {
+  .I2C = &hi2c1, .Address = BH1750_ADDRESS_L, .Timeout = 0xffff
+};
 
-/* Public function prototypes ------------------------------------------------*/
+BH1750_HandleTypeDef hbh1750_2 = {
+  .I2C = &hi2c1, .Address = BH1750_ADDRESS_H, .Timeout = 0xffff
+};
 
+/* Private function prototypes -----------------------------------------------*/
 
-#endif /* INC_BH1750_CONFIG_H_ */
+/* Private function ----------------------------------------------------------*/
+
+/* Public function -----------------------------------------------------------*/

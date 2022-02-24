@@ -56,5 +56,3 @@ float BH1750_ReadLux(BH1750_HandleTypeDef* hbh1750)
 
   return ((rxarray[BH1750_DATA_MSB]<<8) | rxarray[BH1750_DATA_LSB]) / 1.2; // @see BH1750 technical note p. 10;
 }
-
-
