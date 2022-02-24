@@ -5,8 +5,6 @@
  *      Author: ROshan
  */
 
-
-
 #include "lcd_i2c.h"
 #include "i2c.h"
 
