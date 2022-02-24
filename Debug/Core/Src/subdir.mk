@@ -11,7 +11,6 @@ C_SRCS += \
 ../Core/Src/i2c.c \
 ../Core/Src/lcd_i2c.c \
 ../Core/Src/main.c \
-../Core/Src/pid.c \
 ../Core/Src/stm32f7xx_hal_msp.c \
 ../Core/Src/stm32f7xx_it.c \
 ../Core/Src/syscalls.c \
@@ -27,7 +26,6 @@ OBJS += \
 ./Core/Src/i2c.o \
 ./Core/Src/lcd_i2c.o \
 ./Core/Src/main.o \
-./Core/Src/pid.o \
 ./Core/Src/stm32f7xx_hal_msp.o \
 ./Core/Src/stm32f7xx_it.o \
 ./Core/Src/syscalls.o \
@@ -43,7 +41,6 @@ C_DEPS += \
 ./Core/Src/i2c.d \
 ./Core/Src/lcd_i2c.d \
 ./Core/Src/main.d \
-./Core/Src/pid.d \
 ./Core/Src/stm32f7xx_hal_msp.d \
 ./Core/Src/stm32f7xx_it.d \
 ./Core/Src/syscalls.d \
@@ -60,7 +57,7 @@ Core/Src/%.o: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/bh1750.d ./Core/Src/bh1750.o ./Core/Src/bh1750_config.d ./Core/Src/bh1750_config.o ./Core/Src/gpio.d ./Core/Src/gpio.o ./Core/Src/i2c.d ./Core/Src/i2c.o ./Core/Src/lcd_i2c.d ./Core/Src/lcd_i2c.o ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/pid.d ./Core/Src/pid.o ./Core/Src/stm32f7xx_hal_msp.d ./Core/Src/stm32f7xx_hal_msp.o ./Core/Src/stm32f7xx_it.d ./Core/Src/stm32f7xx_it.o ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/system_stm32f7xx.d ./Core/Src/system_stm32f7xx.o ./Core/Src/tim.d ./Core/Src/tim.o ./Core/Src/usart.d ./Core/Src/usart.o
+	-$(RM) ./Core/Src/bh1750.d ./Core/Src/bh1750.o ./Core/Src/bh1750_config.d ./Core/Src/bh1750_config.o ./Core/Src/gpio.d ./Core/Src/gpio.o ./Core/Src/i2c.d ./Core/Src/i2c.o ./Core/Src/lcd_i2c.d ./Core/Src/lcd_i2c.o ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/stm32f7xx_hal_msp.d ./Core/Src/stm32f7xx_hal_msp.o ./Core/Src/stm32f7xx_it.d ./Core/Src/stm32f7xx_it.o ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/system_stm32f7xx.d ./Core/Src/system_stm32f7xx.o ./Core/Src/tim.d ./Core/Src/tim.o ./Core/Src/usart.d ./Core/Src/usart.o
 
 .PHONY: clean-Core-2f-Src
 

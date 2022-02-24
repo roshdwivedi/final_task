@@ -38,7 +38,6 @@
 
 //lcd config
 #include "lcd_i2c.h"
-#include "pid.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
