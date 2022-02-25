@@ -70,6 +70,7 @@ char input[4] = "";
 char text1[20];
 char text2[20];
 char text3[20];
+char text4[20];
 
 int length1, length2, length3;
 uint8_t length;
@@ -141,6 +142,8 @@ void HAL_UART_RxCpltCallback (UART_HandleTypeDef * huart)
 		length1 = snprintf(text1, 20, "SET:%d lux \r\n", disp_out);
 		length2 = snprintf(text2, 20, "OUT:%d lux \r\n", disp_set);
 		length3 = snprintf(text3, 20, "ERR:%d lux \r\n", disp_error);
+		length_duty = snprintf(text4, 20, "DUTY:%d %%\r\n", (int)pwm_duty);
+		 
 		if(input[3]=='U'){
 			HAL_UART_Transmit(&huart3, (uint8_t*)text1, length1, 100);
 		}
@@ -149,6 +152,9 @@ void HAL_UART_RxCpltCallback (UART_HandleTypeDef * huart)
 		}
 		else if(input[3]=='E'){
 			HAL_UART_Transmit(&huart3, (uint8_t*)text3, length3, 100);
+		}
+		else if(input[3]=='D'){
+			HAL_UART_Transmit(&huart3, (uint8_t*)text4, length_duty, 100);
 		}
 	}
 
