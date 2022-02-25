@@ -27,16 +27,13 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <string.h>
 
-
-
-//light sensor
+//Including light sensor
 #include "bh1750_config.h"
 #include "bh1750.h"
 
-//lcd config
+//Including LCD file
 #include "lcd_i2c.h"
 /* USER CODE END Includes */
 
@@ -57,12 +54,9 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+//PID variables
 float error;
-float voltage=0;
-float check_voltage = 0;
 float set_point=490;
-
 float prev_error;
 float I, Integral, prev_Integral;
 float pwm_i;
@@ -79,7 +73,7 @@ char text3[20];
 
 int length1, length2, length3;
 uint8_t length;
-//char buff[3];
+
 
 // Light
 float lightLUXint;
@@ -161,22 +155,26 @@ void HAL_UART_RxCpltCallback (UART_HandleTypeDef * huart)
 }
 void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim){
 	if(htim->Instance == TIM3){
-		lightLUXint = BH1750_ReadLux(&hbh1750_1);
-		error=set_point-lightLUXint;
-		error_p=error/1000*100;
-		// PID //
 
-		// I
-		//	      Integral, prev_Integral;
+		//read the input
+		lightLUXint = BH1750_ReadLux(&hbh1750_1);
+		//calculate the error
+		error=set_point-lightLUXint;
+		//calculate error percentage
+		error_p=error/1000*100;
+		// PI Controll
+
+		//Integral, prev_Integral;
 		I = prev_Integral+error+prev_error;
 		pwm_i=I*ki;
 
 		prev_Integral=I;
 		prev_error = error;
 
-		//P
+		//Proportional
 		pwm_p=kp*error;
 
+		//calculating the PWM
 		pwm_duty=pwm_i+pwm_p;
 
 		if(pwm_duty>999)
@@ -185,14 +183,19 @@ void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef *htim){
 			pwm_duty=0;
 
 
+		// setting the PWM using timer 2 channel 1
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pwm_duty);
 	}
 }
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
+	//setting the counter for the encoder
 	encoder_coutner=__HAL_TIM_GET_COUNTER(htim);
+	//counts
 	count = (int16_t)count;
+	//position if we need it
 	position = count/4;
+	//sconfiguring the setpoint with the rotary encoder
 	set_point=encoder_coutner;
 }
 
@@ -235,22 +238,24 @@ int main(void)
   MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
 	BH1750_Init(&hbh1750_1);
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-	HAL_UART_Receive_IT(&huart3, &input, 4);
-	HAL_TIM_Base_Start_IT(&htim3);
-	HAL_TIM_Base_Start_IT(&htim4);
-	HAL_TIM_Base_Start_IT(&htim5);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);//Timer to Generate PWM
+	HAL_UART_Receive_IT(&huart3, &input, 4); // Usart to configure the serial port Interface
+	HAL_TIM_Base_Start_IT(&htim3);//Timer with a frequency of 1MHz
+	HAL_TIM_Base_Start_IT(&htim4);//Timer configured in Encoder mode
+	HAL_TIM_Base_Start_IT(&htim5);//
 
 
-	//encoder
+	//start the timer in encoder mode
 	HAL_TIM_Encoder_Start_IT(&htim4, TIM_CHANNEL_ALL);
 
 
 	// LCD configuration
-	disp.addr = (0x3F << 1);
+	disp.addr = (0x3F << 1); // defining the display adress
 	disp.bl = true;
-	lcd_init(&disp);
+	lcd_init(&disp);// Init LCD
 
+
+	//setting the display output variables
 	int disp_out;
 	int disp_set;
 	int disp_error;
@@ -260,11 +265,15 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
+
+
 		disp_out = (int)lightLUXint;
 		disp_set = (int)set_point;
 		disp_error=(int)error_p;
 
+		//printing the 1st line of display
 		sprintf(LCDdisplay1, "OUT:%d lux", disp_out);
+		//printing the 2nd line of display
 		sprintf(LCDdisplay2, "SET:%d lux",disp_set);
 
 		sprintf((char *)disp.f_line, LCDdisplay1);
@@ -274,7 +283,7 @@ int main(void)
 
 		length = snprintf(text, 20, "OUT:%d lux \r\n", disp_out);
 
-		HAL_Delay(500);
+		HAL_Delay(500);// delay to refresh the LCD
 
     /* USER CODE END WHILE */
 
